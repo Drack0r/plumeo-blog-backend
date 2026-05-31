@@ -17,7 +17,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(30)
-  @Matches(/^[^\p{Emoji}]*$/u, {
+  @Matches(/^[^\p{Emoji_Presentation}]*$/u, {
     message: "Le nom d'utilisateur ne doit pas contenir d'emojis",
   })
   username!: string;
@@ -32,7 +32,7 @@ export class CreateUserDto {
   @Matches(/[0-9]/, {
     message: 'Le mot de passe doit contenir au moins un chiffre',
   })
-  @Matches(/^[^\p{Emoji}]*$/u, {
+  @Matches(/^[^\p{Emoji_Presentation}]*$/u, {
     message: "Le mot de passe ne doit pas contenir d'emojis",
   })
   password!: string;
