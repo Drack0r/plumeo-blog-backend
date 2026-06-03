@@ -30,6 +30,10 @@ export class UsersService {
     return await this.userModel.findById(id);
   }
 
+  async findOneByMail(email: string): Promise<User | null> {
+    return await this.userModel.findOne({ email: email }).select('+password');
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User | null> {
     return await this.userModel.findByIdAndUpdate(id, updateUserDto, {
       new: true,
