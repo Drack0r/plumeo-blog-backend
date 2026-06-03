@@ -1,27 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { Article, ArticleDocument } from './schemas/article.schema';
 
 @Injectable()
 export class ArticlesService {
-  create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article';
+  constructor(
+    @InjectModel(Article.name) private articleModel: Model<ArticleDocument>,
+  ) {}
+
+  async create(createArticleDto: CreateArticleDto): Promise<Article> {
+    return await this.articleModel.create(createArticleDto);
   }
 
-  findAll() {
-    return `This action returns all articles`;
+  async findAll(): Promise<Article[]> {
+    return await this.articleModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} article`;
+  async findOne(id: string): Promise<Article | null> {
+    return await this.articleModel.findById(id);
   }
 
-  update(id: number, updateArticleDto: UpdateArticleDto) {
-    return `This action updates a #${id} article`;
+  async update(
+    id: string,
+    updateArticleDto: UpdateArticleDto,
+  ): Promise<Article | null> {
+    return await this.articleModel.findByIdAndUpdate(id, updateArticleDto, {
+      new: true,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} article`;
+  async remove(id: string): Promise<Article | null> {
+    return await this.articleModel.findByIdAndDelete(id);
   }
 }
